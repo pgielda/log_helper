@@ -33,6 +33,7 @@ void main() {
 	log_msg(ERR, __func__, "This is an error");
 	log_msg(WARN, "some_module", "This is a warning");
 	log_msg(INFO, __func__, "This is an info about %s", "something");
-	log_msg(DEBUG, "some_other_module", "we are debugging file %s at line %d", __FILE__, __LINE__);
+	log_msg(INFO, __func__, "LOGGER_MAX_LEVEL = %d", LOGGER_MAX_LEVEL);
+	log_msg(DEBUG, "some_other_module", "we are debugging file %s at line %d", __FILE__, __LINE__); // this will not be printed unles LOGGER_MAX_LEVEL is >= 3
 }
 

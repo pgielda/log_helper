@@ -44,9 +44,9 @@ static void inner_log(const char* source, const char* text, va_list argList, con
         pthread_mutex_init(&log_mutex, NULL);
     }
 #endif
-    if (!LOGGING) return;
+    if (LOGGER_SILENT) return;
     char color_s[10];
-    if (COLORS) {
+    if (LOGGER_COLORS) {
         sprintf(color_s, "\e[1;%dm", color);
     }
     struct timeval tv;
@@ -58,7 +58,7 @@ static void inner_log(const char* source, const char* text, va_list argList, con
 #ifdef LOGGER_USE_THREADS
     pthread_mutex_lock(&log_mutex);
 #endif
-    printf("[%s%s%s @ %s] %s%s%s: ", COLORS ? color_s : "", type, COLORS ? "\e[21;39m" : "", time_s, COLORS ? "\e[1;37m" : "", source, COLORS ? "\e[21;39m" : "");
+    printf("[%s%s%s @ %s] %s%s%s: ", LOGGER_COLORS ? color_s : "", type, LOGGER_COLORS ? "\e[21;39m" : "", time_s, LOGGER_COLORS ? "\e[1;37m" : "", source, LOGGER_COLORS ? "\e[21;39m" : "");
     vprintf(text, argList);
     printf("\n\r");
 #ifdef LOGGER_USE_THREADS
@@ -68,7 +68,7 @@ static void inner_log(const char* source, const char* text, va_list argList, con
 
 void log_msg(int level, const char *type, int color, const char* source, const char* text, ...)
 {
-    if(level < 0)
+    if ((level < 0) || (level > LOGGER_MAX_LEVEL))
     {
         return;
     }
@@ -80,7 +80,7 @@ void log_msg(int level, const char *type, int color, const char* source, const c
 
 void vlog_msg(int level, const char *type, int color, const char* source, const char* text, va_list argList)
 {
-    if(level < 0)
+    if ((level < 0) || (level > LOGGER_MAX_LEVEL))
     {
         return;
     }
