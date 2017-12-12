@@ -1,2 +1,4 @@
 # log_helper
-simple logger helper
+to compile:
+gcc *.c -Werror -o test
+
